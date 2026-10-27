@@ -460,21 +460,29 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
     }
 
     .guide-list li {
+      position: relative;
+      padding-left: 20px;
       font-size: 0.88rem;
       color: #cbd5e1;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
+      line-height: 1.6;
+      display: block; /* Normal block flow fixes the column wrapping glitch */
     }
 
     .guide-list li::before {
       content: "•";
+      position: absolute;
+      left: 4px;
+      top: -1px;
       color: var(--accent-cyan);
       font-weight: bold;
+      font-size: 1.1rem;
+      line-height: 1.5;
     }
 
     .quote-box {
@@ -527,53 +535,172 @@
       opacity: 0.9;
     }
 
-    .checkbox-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 14px;
-      padding: 11px 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px dashed rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-    }
-
-    .checkbox-label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
+    /* Header Right (Mini Step Indicator) */
+    .card-header-right {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .custom-switch {
+    .mini-steps-bar {
+      display: flex;
+      gap: 3px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mini-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.18);
+      transition: all 0.2s ease;
+    }
+
+    .mini-dot.done {
+      background: var(--accent-cyan);
+      box-shadow: 0 0 6px var(--accent-cyan);
+    }
+
+    .mini-dot.all-done {
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
+    }
+
+    .stage-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+
+    .stage-pill.complete {
+      background: rgba(0, 245, 155, 0.15);
+      color: var(--accent-green);
+      border-color: rgba(0, 245, 155, 0.35);
+    }
+
+    /* Pipeline Tracker (4-Stage Progress) */
+    .pipeline-tracker {
+      margin-top: 16px;
+      background: rgba(10, 14, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 13px;
+    }
+
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .pipeline-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .pipeline-counter {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .pipeline-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .p-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .p-step:active {
+      transform: scale(0.98);
+    }
+
+    .p-step-chk {
       width: 22px;
       height: 22px;
       border-radius: 6px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.22);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: transparent;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
     }
 
-    .card-bank.completed .custom-switch {
+    .p-step-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .p-step-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      transition: color 0.2s ease;
+    }
+
+    .p-step-sub {
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-top: 1px;
+    }
+
+    /* Active / Checked state */
+    .p-step.checked {
+      background: rgba(0, 210, 255, 0.08);
+      border-color: rgba(0, 210, 255, 0.35);
+    }
+
+    .p-step.checked .p-step-chk {
+      background: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      color: #080b11;
+    }
+
+    .p-step.checked .p-step-name {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* 4th Step (ЦД) special green highlight */
+    .p-step.step-cd.checked {
+      background: rgba(0, 245, 155, 0.09);
+      border-color: rgba(0, 245, 155, 0.4);
+    }
+
+    .p-step.step-cd.checked .p-step-chk {
       background: var(--accent-green);
       border-color: var(--accent-green);
-    }
-
-    .custom-switch::after {
-      content: "✓";
       color: #080b11;
-      font-size: 13px;
-      font-weight: 800;
-      display: none;
-    }
-
-    .card-bank.completed .custom-switch::after {
-      display: block;
     }
 
     .rule-card {
@@ -711,7 +838,7 @@
         </div>
       </div>
 
-      <!-- 1. BANK: ВТБ -->
+            <!-- 1. BANK: ВТБ -->
       <div class="card-bank open" id="bank-vtb">
         <div class="card-header" onclick="toggleCard('bank-vtb')">
           <div class="bank-identity">
@@ -720,11 +847,20 @@
               <div class="bank-name">ВТБ Банк (РегБиз / РКО)</div>
               <div class="bank-tags">
                 <span class="tag tag-free">Тариф: Простой процент (0 ₽)</span>
-                <span class="tag">Без бизнес-карты</span>
+                <span class="tag">Стартовая тройка</span>
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-vtb-1"></span>
+              <span class="mini-dot" id="dot-vtb-2"></span>
+              <span class="mini-dot" id="dot-vtb-3"></span>
+              <span class="mini-dot" id="dot-vtb-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-vtb">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -732,7 +868,7 @@
             <div class="guide-block-title cyan">📞 Что говорить на входящем звонке:</div>
             <p class="guide-text">
               На звонке сказать: <b>«ИП сейчас находится на стадии регистрации в налоговой, перезвоните через пару дней»</b>.<br>
-              Счет откроют только после того, как из налоговой придет подтверждение о регистрации ИП. Если ИП уже открыто — можешь сразу согласовать встречу!
+              Счет откроют только после подтверждения из налоговой. Если ИП уже открыто — можешь сразу согласовать встречу!
             </p>
           </div>
 
@@ -740,8 +876,8 @@
             <div class="guide-block-title gold">‼️ Важные моменты:</div>
             <ul class="guide-list">
               <li><b>Звонок обязательно нужно принять.</b></li>
-              <li><b>Спроси у менеджера, по какой заявке он звонит.</b> Если говорит общими фразами «с предложением» — ни на что не соглашайся. Должны набрать строго по твоей заявке!</li>
-              <li>Если в течение суток не перезвонят — набери сам по номеру <span class="phone-badge">8-800-301-63-01</span> и уточни статус заявки. Если не видят — пиши Вадиму.</li>
+              <li><b>Спроси у менеджера, по какой заявке он звонит.</b> Если говорит общими фразами «с предложением» — отказывайся. Должны набрать строго по твоей анкете!</li>
+              <li>Если в течение суток не перезвонят — набери сам по номеру <span class="phone-badge">8-800-301-63-01</span>.</li>
             </ul>
           </div>
 
@@ -750,37 +886,60 @@
             <ul class="guide-list">
               <li>Заполняешь данные на сайте банка.</li>
               <li>Когда появится надпись <b>«Компании нет в списке»</b> — нажми <b>«Ввести данные вручную»</b>.</li>
-              <li>При выборе тарифа выбирай: <b>«Простой процент»</b>. Бизнес-карта не нужна, от всех платных услуг и страховок отказывайся.</li>
+              <li>При выборе тарифа выбирай: <b>«Простой процент»</b>. Бизнес-карта не нужна, от платных услуг отказывайся.</li>
             </ul>
           </div>
 
           <div class="guide-block" style="border-color: rgba(255, 51, 75, 0.3);">
-            <div class="guide-block-title red">❓ Особенности встречи (Защита от навязывания):</div>
+            <div class="guide-block-title red">❓ Защита от навязывания пополнений:</div>
             <p class="guide-text">
-              На встрече представитель может сказать: <i>«Нужно пополнить счет на 10–15 тыс. ₽, иначе он не заработает и мы не сможем открыть»</i>.<br>
-              <b>Это НЕ слушаем и ничего не пополняем!</b> Отвечай: <i>«Прямо сейчас положить не могу, сделаю это вечером сам через онлайн-банк»</i>.
+              Если представитель говорит: <i>«Нужно положить 10–15 тыс. ₽, иначе счет не откроется»</i> — <b>ничего не пополняй!</b> Отвечай: <i>«Положу вечером сам через онлайн-банк»</i>.
             </p>
-            <p class="guide-text" style="margin-top: 8px;">
-              Если сотрудник жестко продавливает, говори универсальную фразу:
-            </p>
-            <div class="quote-box">
+            <div class="quote-box" style="margin-top: 6px;">
               «Мне нужно официальное подтверждение с печатью банка об этом требовании»
             </div>
-            <p class="guide-text" style="margin-top: 6px; font-size: 0.82rem; color: #94a3b8;">
-              Сотрудник никогда не предоставит эту бумагу, потому что врет. Дави этой фразой до конца.
-            </p>
           </div>
 
           <a href="#" class="btn-apply" id="link-vtb" target="_blank" onclick="handleBankClick('vtb', event)">
             🔗 Открыть заявку ВТБ ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('vtb')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-vtb">Заявка подана / Встреча назначена</span>
-            </span>
-            <div class="custom-switch" id="switch-vtb"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-vtb">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-vtb-1" onclick="toggleStage('vtb', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Анкета отправлена на сайте ВТБ</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-vtb-2" onclick="toggleStage('vtb', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Назначил встречу / звонок</div>
+                  <div class="p-step-sub">Звонок принят, дата согласована</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-vtb-3" onclick="toggleStage('vtb', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Встретился / забрал карту</div>
+                  <div class="p-step-sub">Договор подписан, карта получена</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-vtb-4" onclick="toggleStage('vtb', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Пополнение 5 500 – 6 000 ₽ на 2 дня</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -794,75 +953,88 @@
               <div class="bank-name">Альфа-Банк (РКО)</div>
               <div class="bank-tags">
                 <span class="tag tag-free">Тариф: Ноль за обслуживание (0 ₽)</span>
-                <span class="tag">Через Яндекс Браузер</span>
+                <span class="tag">Яндекс Браузер</span>
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-alfa-1"></span>
+              <span class="mini-dot" id="dot-alfa-2"></span>
+              <span class="mini-dot" id="dot-alfa-3"></span>
+              <span class="mini-dot" id="dot-alfa-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-alfa">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
           <div class="guide-block" style="border-color: rgba(255, 51, 75, 0.25);">
             <div class="guide-block-title red">🌐 Браузер для оформления:</div>
             <p class="guide-text">
-              <b>Обязательно заходи через Яндекс Браузер!</b> В других браузерах ссылки Альфы могут открываться некорректно или срезать заявку.
+              <b>Обязательно заходи через Яндекс Браузер!</b> В других браузерах ссылки Альфы могут открываться некорректно.
             </p>
           </div>
 
           <div class="guide-block">
             <div class="guide-block-title cyan">📞 Что говорить на входящем звонке:</div>
             <p class="guide-text">
-              На звонке сказать: <b>«ИП сейчас находится на стадии регистрации в налоговой, перезвоните через несколько дней»</b>.<br>
-              Счет откроют только после того, как из налоговой придет подтверждение о регистрации ИП. Если ИП уже открыто — можешь сразу назначить встречу курьера!
+              На звонке сказать: <b>«ИП сейчас находится на стадии регистрации в налоговой, перезвоните через пару дней»</b>.<br>
+              Счет откроют только после того, как зарегистрируют ИП. Если ИП уже открыто — сразу согласуй встречу курьера!
             </p>
           </div>
 
           <div class="guide-block">
-            <div class="guide-block-title gold">‼️ Важные моменты:</div>
+            <div class="guide-block-title green">🔤 Тариф и пошаговые шаги:</div>
             <ul class="guide-list">
-              <li><b>Звонок обязательно нужно принять.</b></li>
-              <li><b>Спроси у менеджера, по какой заявке он звонит.</b> Если говорит не по твоим конкретным данным, а просто <i>«с предложением»</i> — ни на что не соглашайся. Должны набрать строго по твоей заявке!</li>
-              <li>Если не наберут в течение суток — позвони сам в поддержку Альфа-Банка по номеру <span class="phone-badge">8-800-200-00-00</span> или <span class="phone-badge">8-800-100-77-33</span> и спроси, видят ли они твою заявку.</li>
+              <li>Выбирай тариф: <b>«Ноль за обслуживание»</b> (0 ₽/мес). Платные опции НЕ нужны!</li>
+              <li>В поле <i>«Название компании»</i> пиши: <b>ИП + своё ФИО</b>.</li>
+              <li>Если в списке тебя нет — в конце нажми <b>«Заполнить вручную»</b> (заполняй всё, кроме КПП и ОГРН).</li>
+              <li><b>ОБЯЗАТЕЛЬНО</b> прямо на сайте в анкете назначь встречу с курьером!</li>
             </ul>
-          </div>
-
-          <div class="guide-block">
-            <div class="guide-block-title green">🔤 Тариф и услуги:</div>
-            <p class="guide-text">
-              Выбирай тариф: <b>«Ноль за обслуживание»</b> (0 ₽/мес). Все дополнительные платные услуги, страховки и СМС-пакеты <b>НЕ нужны</b>, отказывайся от них!
-            </p>
-          </div>
-
-          <div class="guide-block">
-            <div class="guide-block-title cyan">🔴 Пошаговая инструкция заполнения:</div>
-            <ul class="guide-list">
-              <li><b>Шаг 1:</b> Переходишь по ссылке ниже, вводишь первичные данные (телефон).</li>
-              <li><b>Шаг 2:</b> Тебя перекинет на сайт Альфы. Там заполняешь:
-                <br>• В поле <i>«Название компании»</i> пишешь: <b>ИП + своё ФИО</b> (например: <code>ИП Иванов Иван Иванович</code>).
-                <br>• Если в открывшемся списке тебя не будет — в самом конце нажми <b>«Заполнить вручную»</b>.
-                <br>• Заполняешь все поля, <b>кроме КПП и ОГРН</b>, и нажимаешь <i>«Отправить заявку»</i>.
-              </li>
-              <li><b>Шаг 3:</b> Дальше перекинет на финальную страницу, где нужно еще раз подтвердить данные и <b>назначить встречу с представителем</b>.</li>
-            </ul>
-            
-            <div class="quote-box" style="margin-top: 10px; border-color: var(--accent-cyan); background: rgba(0, 210, 255, 0.08);">
-              ⚠️ ОБЯЗАТЕЛЬНО назначь встречу на сайте прямо в анкете! Только после этого заявка уходит в банк.
-            </div>
-            <p class="guide-text" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-              💡 <i>Если ИП еще на регистрации:</i> назначь встречу с запасом (примерно через 4 дня), а на звонке скажи: <i>«Жду документы из налоговой, если не успеют — перенесем дату встречи»</i>.
-            </p>
           </div>
 
           <a href="#" class="btn-apply" id="link-alfa" target="_blank" onclick="handleBankClick('alfa', event)">
             🔗 Открыть заявку Альфа-Банк ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('alfa')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-alfa">Заявка подана / Встреча назначена</span>
-            </span>
-            <div class="custom-switch" id="switch-alfa"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-alfa">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-alfa-1" onclick="toggleStage('alfa', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Анкета заполнена через Яндекс Браузер</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-alfa-2" onclick="toggleStage('alfa', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Назначил встречу курьера</div>
+                  <div class="p-step-sub">Встреча назначена на сайте в анкете</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-alfa-3" onclick="toggleStage('alfa', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Встретился / забрал карту</div>
+                  <div class="p-step-sub">Курьер приезжал, счет активирован</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-alfa-4" onclick="toggleStage('alfa', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Пополнение 4 000 – 5 000 ₽ на 2 дня</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -880,24 +1052,32 @@
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-psb-1"></span>
+              <span class="mini-dot" id="dot-psb-2"></span>
+              <span class="mini-dot" id="dot-psb-3"></span>
+              <span class="mini-dot" id="dot-psb-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-psb">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
           <div class="guide-block">
             <div class="guide-block-title cyan">⚡ Оформление заявки:</div>
             <p class="guide-text">
-              Подаем заявку в стартовой тройке (вместе с Альфой и ВТБ). Заполняй данные (ФИО, телефон). При выборе тарифа выбирай бесплатный тариф без абонентской платы.
+              Подаем заявку в стартовой тройке (вместе с Альфой и ВТБ). При выборе тарифа выбирай бесплатный тариф без абонентской платы.
             </p>
           </div>
 
           <div class="guide-block">
             <div class="guide-block-title gold">📞 Звонок и защита от перехвата:</div>
             <ul class="guide-list">
-              <li>Принимай входящий звонок. Спроси: <i>«Мы по этой заявке сейчас продолжим открытие?»</i></li>
-              <li>Если ИП на регистрации: скажи, что ждешь подтверждения из ФНС и назначь звонок/встречу через 3–4 дня.</li>
-              <li>Если ИП уже открыто: согласуй удобное время для визита курьера.</li>
-              <li>От любых платных услуг, платных карт и страховок отказывайся.</li>
+              <li>Принимай звонок. Спроси: <i>«Мы по этой заявке сейчас продолжим открытие?»</i></li>
+              <li>Если ИП на регистрации: скажи, что ждешь подтверждения из ФНС и согласуй дату через 3–4 дня.</li>
+              <li>Если ИП уже открыто: согласуй удобное время для визита представителя.</li>
             </ul>
           </div>
 
@@ -905,12 +1085,42 @@
             🔗 Открыть заявку ПСБ Банк ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('psb')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-psb">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-psb"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-psb">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-psb-1" onclick="toggleStage('psb', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Анкета отправлена в ПСБ</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-psb-2" onclick="toggleStage('psb', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Назначил встречу / звонок</div>
+                  <div class="p-step-sub">Звонок менеджера принят</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-psb-3" onclick="toggleStage('psb', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Встретился / забрал карту</div>
+                  <div class="p-step-sub">Договор подписан, счет открыт</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-psb-4" onclick="toggleStage('psb', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Пополнение 3 500 – 4 000 ₽ на 2 дня</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -929,7 +1139,16 @@
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-tbank-1"></span>
+              <span class="mini-dot" id="dot-tbank-2"></span>
+              <span class="mini-dot" id="dot-tbank-3"></span>
+              <span class="mini-dot" id="dot-tbank-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-tbank">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -964,15 +1183,18 @@
                 <li><b>Шаг 3:</b> Вводи стандартно: номер телефона, ФИО и код подтверждения из SMS.</li>
                 <li><b>Шаг 4:</b> Заполняй страницу с гражданством и паспортными данными.</li>
                 <li><b>Шаг 5: Вид деятельности (ОКВЭД):</b>
-                  <br>• Нажимай <b>«Добавить»</b>.
-                  <br>• Выбирай <b>«Как в справочнике»</b>.
-                  <br>• В поиске вбивай код: <span class="copy-pill" onclick="copyText('47.91')">47.91 📋</span>
-                  <br>• Выбирай пункт из поиска и обязательно ставь <b>галочку</b>.
+                  <div style="margin-top: 5px; padding: 6px 10px; background: rgba(0, 210, 255, 0.05); border-left: 2px solid var(--accent-cyan); border-radius: 0 6px 6px 0;">
+                    • Нажимай <b>«Добавить»</b> ➔ выбирай <b>«Как в справочнике»</b><br>
+                    • В поиске вбивай код: <span class="copy-pill" onclick="copyText('47.91')">47.91 📋</span><br>
+                    • Выбирай найденный пункт и обязательно ставь <b>галочку</b>
+                  </div>
                 </li>
                 <li><b>Шаг 6: Налоговый режим:</b>
-                  <br>• Пролистывай страницу до конца.
-                  <br>• На вопрос <i>«Вы зарегистрированы в налоговой как самозанятый?»</i> — отвечай <b>«НЕТ»</b>.
-                  <br>• Дальше выбирай режим: <b>«АУСН Доходы 8%»</b>.
+                  <div style="margin-top: 5px; padding: 6px 10px; background: rgba(251, 191, 36, 0.05); border-left: 2px solid var(--accent-gold); border-radius: 0 6px 6px 0;">
+                    • Пролистывай страницу до конца<br>
+                    • На вопрос <i>«Вы зарегистрированы в налоговой как самозанятый?»</i> — отвечай <b>«НЕТ»</b><br>
+                    • Дальше выбирай режим: <b>«АУСН Доходы 8%»</b>
+                  </div>
                 </li>
                 <li><b>Шаг 7: Документы:</b> Загружай фото паспорта и СНИЛС, отправляй заявку и ожидай звонка/письма от Т-Банка для согласования даты встречи с курьером.</li>
               </ul>
@@ -992,14 +1214,16 @@
               <div class="guide-block-title gold">📋 Пошаговая инструкция оформления:</div>
               <ul class="guide-list">
                 <li><b>Шаг 1:</b> В браузере (Яндекс Браузер или Google) вбивай в поиск фразу:
-                  <br><span class="copy-pill" style="margin-top: 5px;" onclick="copyText('тбанк открыть самозанятость в статусе предпринимателя')">тбанк открыть самозанятость в статусе предпринимателя 📋</span>
+                  <div style="margin-top: 5px;">
+                    <span class="copy-pill" onclick="copyText('тбанк открыть самозанятость в статусе предпринимателя')">тбанк открыть самозанятость в статусе предпринимателя 📋</span>
+                  </div>
                 </li>
                 <li><b>Шаг 2:</b> Пролистывай результаты до официального сайта Т-Банка с этим заголовком и переходи на страницу.</li>
                 <li><b>Шаг 3:</b> Заполняй данные (ФИО, телефон, паспорт).</li>
-                <li><b>Шаг 4: Вид деятельности:</b> нажимай <b>«Добавить»</b> ➔ <b>«Как в справочнике»</b> ➔ в поиске вбивай <span class="copy-pill" onclick="copyText('47.91')">47.91 📋</span> ➔ ставь галочку.</li>
+                <li><b>Шаг 4: Вид деятельности:</b> нажимай <b>«Добавить»</b> ➔ <b>«Как в справочнике»</b> ➔ вбивай <span class="copy-pill" onclick="copyText('47.91')">47.91 📋</span> ➔ ставь галочку.</li>
                 <li><b>Шаг 5:</b> Нажимай «Дальше». На вопрос <i>«Вы зарегистрированы в налоговой как самозанятый?»</i> — отвечай <b>«ДА»</b>.</li>
                 <li><b>Шаг 6:</b> Пролистывай до конца и выбирай пункт: <b>«Остаться на НПД»</b>.</li>
-                <li><b>Шаг 7:</b> Загружай фото документов и ожидай подтверждения / звонка от Т-Банка.</li>
+                <li><b>Шаг 7:</b> Загружай фото документов и ожидай подтверждения от банка.</li>
               </ul>
             </div>
           </div>
@@ -1008,8 +1232,8 @@
           <div class="guide-block">
             <div class="guide-block-title green">🔤 Тариф и встреча с представителем:</div>
             <ul class="guide-list">
-              <li><b>Тариф:</b> Выбирай <b>«Простой»</b> (0 ₽/мес). От всех платных бизнес-карт, платных SMS и страховок отказывайся!</li>
-              <li><b>Встреча:</b> Занимает всего <b>5–10 минут</b>. Курьер Т-Банка приедет в любое удобное тебе место (домой или в кафе), привезет документы и бизнес-карту.</li>
+              <li><b>Тариф:</b> Выбирай <b>«Простой»</b> (0 ₽/мес). От всех платных бизнес-карт, SMS и страховок отказывайся!</li>
+              <li><b>Встреча:</b> Занимает всего <b>5–10 минут</b>. Курьер Т-Банка приедет в любое удобное тебе место (домой или в кафе), привезет документы и карту.</li>
             </ul>
           </div>
 
@@ -1017,12 +1241,42 @@
             🔗 Оформить Т-Банк (Бизнес & РКО) ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('tbank')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-tbank">Заявка подана / Встреча согласована</span>
-            </span>
-            <div class="custom-switch" id="switch-tbank"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-tbank">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-tbank-1" onclick="toggleStage('tbank', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Регистрация бизнеса & РКО</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-tbank-2" onclick="toggleStage('tbank', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Назначил встречу курьера</div>
+                  <div class="p-step-sub">Дата и время встречи согласованы</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-tbank-3" onclick="toggleStage('tbank', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Встретился / забрал карту</div>
+                  <div class="p-step-sub">Договор подписан, карта на руках</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-tbank-4" onclick="toggleStage('tbank', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Регистрация бизнеса + 1 операция</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1040,7 +1294,16 @@
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-tochka-1"></span>
+              <span class="mini-dot" id="dot-tochka-2"></span>
+              <span class="mini-dot" id="dot-tochka-3"></span>
+              <span class="mini-dot" id="dot-tochka-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-tochka">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -1063,12 +1326,42 @@
             🔗 Оформить Точка Банк ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('tochka')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-tochka">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-tochka"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-tochka">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-tochka-1" onclick="toggleStage('tochka', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Анкета на сайте Точки</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-tochka-2" onclick="toggleStage('tochka', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Прошел подтверждение</div>
+                  <div class="p-step-sub">Звонок / видеоидентификация</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-tochka-3" onclick="toggleStage('tochka', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Доступ в кабинет открыт</div>
+                  <div class="p-step-sub">Счет готов к работе</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-tochka-4" onclick="toggleStage('tochka', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Тестовое пополнение 1 000 ₽</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1086,7 +1379,16 @@
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-ozon-1"></span>
+              <span class="mini-dot" id="dot-ozon-2"></span>
+              <span class="mini-dot" id="dot-ozon-3"></span>
+              <span class="mini-dot" id="dot-ozon-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-ozon">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -1106,12 +1408,42 @@
             🔗 Оформить Ozon Банк ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('ozon')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-ozon">Заявка подана / Баланс пополнен</span>
-            </span>
-            <div class="custom-switch" id="switch-ozon"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-ozon">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-ozon-1" onclick="toggleStage('ozon', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Анкета на сайте Ozon Банка</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-ozon-2" onclick="toggleStage('ozon', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Подтвердил открытие</div>
+                  <div class="p-step-sub">Звонок / SMS подтверждение</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-ozon-3" onclick="toggleStage('ozon', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Доступ в банк получен</div>
+                  <div class="p-step-sub">Личный кабинет активен</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-ozon-4" onclick="toggleStage('ozon', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Пополнение 5.1–6к на 5–6 дней</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1129,7 +1461,16 @@
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-ubrir-1"></span>
+              <span class="mini-dot" id="dot-ubrir-2"></span>
+              <span class="mini-dot" id="dot-ubrir-3"></span>
+              <span class="mini-dot" id="dot-ubrir-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-ubrir">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -1141,7 +1482,7 @@
             <ul class="guide-list" style="margin-top: 8px;">
               <li><b>Тариф:</b> Выбирай стартовый тариф без абонентской платы.</li>
               <li><b>Целевое действие:</b> Пополнить на <b>5 100 – 6 000 ₽</b> (например: <code>5 450 ₽</code>), назначение: <i>«Перевод собственных средств»</i>.</li>
-              <li><b>Срок удержания:</b> Подержать <b>2 дня</b>. <i>(Позже выполним еще 1 простой B2B перевод по инструкции куратора)</i>.</li>
+              <li><b>Срок удержания:</b> Подержать <b>2 дня</b>.</li>
             </ul>
           </div>
 
@@ -1149,12 +1490,42 @@
             🔗 Оформить УБРиР ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('ubrir')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-ubrir">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-ubrir"></div>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-ubrir">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-ubrir-1" onclick="toggleStage('ubrir', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">Анкета на сайте УБРиР</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-ubrir-2" onclick="toggleStage('ubrir', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Назначил встречу / звонок</div>
+                  <div class="p-step-sub">Подтверждение данных по звонку</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-ubrir-3" onclick="toggleStage('ubrir', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Счет открыт / карта на руках</div>
+                  <div class="p-step-sub">Доступ в банк получен</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-ubrir-4" onclick="toggleStage('ubrir', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Пополнение 5.1–6к на 2 дня</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1168,11 +1539,20 @@
               <div class="bank-name">СберБизнес (РКО)</div>
               <div class="bank-tags">
                 <span class="tag tag-free">Тариф: Легкий старт (0 ₽)</span>
-                <span class="tag">Входящая транзакция</span>
+                <span class="tag">СберБанк Онлайн</span>
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
+          <div class="card-header-right">
+            <div class="mini-steps-bar">
+              <span class="mini-dot" id="dot-sber-1"></span>
+              <span class="mini-dot" id="dot-sber-2"></span>
+              <span class="mini-dot" id="dot-sber-3"></span>
+              <span class="mini-dot" id="dot-sber-4"></span>
+            </div>
+            <span class="stage-pill" id="pill-sber">0/4</span>
+            <span class="card-toggle-icon">▼</span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -1191,143 +1571,45 @@
             🔗 Оформить СберБизнес ➔
           </a>
 
-          <div class="checkbox-wrap" onclick="toggleComplete('sber')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-sber">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-sber"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 9. BANK: УРАЛСИБ -->
-      <div class="card-bank" id="bank-uralsib">
-        <div class="card-header" onclick="toggleCard('bank-uralsib')">
-          <div class="bank-identity">
-            <div class="bank-logo-box" style="color: #3b82f6;">🔷</div>
-            <div class="bank-title-wrap">
-              <div class="bank-name">Уралсиб Банк (РКО)</div>
-              <div class="bank-tags">
-                <span class="tag tag-free">Тариф: 0 ₽</span>
-                <span class="tag">B2B переводы 30к+</span>
+          <!-- Pipeline Tracker -->
+          <div class="pipeline-tracker">
+            <div class="pipeline-header">
+              <span class="pipeline-title">🚦 Трекер готовности:</span>
+              <span class="pipeline-counter" id="counter-sber">0 из 4 пройдено</span>
+            </div>
+            <div class="pipeline-steps">
+              <div class="p-step" id="pstep-sber-1" onclick="toggleStage('sber', 1, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">1. Подал заявку онлайн</div>
+                  <div class="p-step-sub">СберБанк Онлайн или сайт</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-sber-2" onclick="toggleStage('sber', 2, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">2. Назначил встречу / звонок</div>
+                  <div class="p-step-sub">Менеджер Сбера подтвердил</div>
+                </div>
+              </div>
+              <div class="p-step" id="pstep-sber-3" onclick="toggleStage('sber', 3, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">3. Счет открыт / карта получена</div>
+                  <div class="p-step-sub">Договор подписан</div>
+                </div>
+              </div>
+              <div class="p-step step-cd" id="pstep-sber-4" onclick="toggleStage('sber', 4, event)">
+                <div class="p-step-chk">✓</div>
+                <div class="p-step-content">
+                  <div class="p-step-name">4. Выполнил ЦД (активация)</div>
+                  <div class="p-step-sub">Входящий платеж 5 000 – 10 000 ₽</div>
+                </div>
               </div>
             </div>
           </div>
-          <span class="card-toggle-icon">▼</span>
-        </div>
-
-        <div class="card-body">
-          <div class="guide-block">
-            <div class="guide-block-title cyan">⚡ Оформление и ЦД (B2B переводы):</div>
-            <p class="guide-text">
-              Заполняй онлайн-заявку, подтверждай открытие счета. Тариф бесплатный стартовый.
-            </p>
-            <ul class="guide-list" style="margin-top: 8px;">
-              <li><b>Целевое действие:</b> 3 перевода общей суммой <b>30 000+ ₽</b> (делаем с запасом: <b>35 000+ ₽</b>).</li>
-              <li><b>Разбивка сумм:</b> Делаем неровными суммами, например: <code>11 250 ₽</code> + <code>14 600 ₽</code> + <code>9 300 ₽</code>.</li>
-              <li><b>Назначения платежей:</b> Выбирай формулировки из вкладки «🎯 ЦД» по ОКВЭД 47.91 (например: <i>«Оплата по счету №... за партию чехлов»</i>).</li>
-            </ul>
-          </div>
-
-          <a href="#" class="btn-apply" id="link-uralsib" target="_blank" onclick="handleBankClick('uralsib', event)">
-            🔗 Оформить Уралсиб Банк ➔
-          </a>
-
-          <div class="checkbox-wrap" onclick="toggleComplete('uralsib')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-uralsib">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-uralsib"></div>
-          </div>
         </div>
       </div>
-
-      <!-- 10. BANK: ЛОКО-БАНК -->
-      <div class="card-bank" id="bank-loko">
-        <div class="card-header" onclick="toggleCard('bank-loko')">
-          <div class="bank-identity">
-            <div class="bank-logo-box" style="color: #ec4899;">🌸</div>
-            <div class="bank-title-wrap">
-              <div class="bank-name">Локо-Банк (РКО)</div>
-              <div class="bank-tags">
-                <span class="tag tag-free">Тариф: Свой бизнес (0 ₽)</span>
-                <span class="tag">B2B переводы 30к+</span>
-              </div>
-            </div>
-          </div>
-          <span class="card-toggle-icon">▼</span>
-        </div>
-
-        <div class="card-body">
-          <div class="guide-block">
-            <div class="guide-block-title cyan">⚡ Оформление и ЦД:</div>
-            <p class="guide-text">
-              Заполняй онлайн-заявку. Тариф: <b>«Свой бизнес»</b> (0 ₽/мес).
-            </p>
-            <ul class="guide-list" style="margin-top: 8px;">
-              <li><b>Целевое действие:</b> 1–3 перевода суммой <b>30 000+ ₽</b> (делаем с запасом ~35 000 ₽ неровными частями).</li>
-              <li><b>Безопасность:</b> Переводы отправляются между участниками по схеме четверок (под контролем Вадима). Запрещен прямой пинг-понг между одними и теми же счетами!</li>
-            </ul>
-          </div>
-
-          <a href="#" class="btn-apply" id="link-loko" target="_blank" onclick="handleBankClick('loko', event)">
-            🔗 Оформить Локо-Банк ➔
-          </a>
-
-          <div class="checkbox-wrap" onclick="toggleComplete('loko')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-loko">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-loko"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 11. BANK: АК БАРС БАНК -->
-      <div class="card-bank" id="bank-akbars">
-        <div class="card-header" onclick="toggleCard('bank-akbars')">
-          <div class="bank-identity">
-            <div class="bank-logo-box" style="color: #06b6d4;">❄️</div>
-            <div class="bank-title-wrap">
-              <div class="bank-name">Ак Барс Банк (РКО)</div>
-              <div class="bank-tags">
-                <span class="tag tag-free">Тариф: 0 ₽</span>
-                <span class="tag">B2B переводы 30к+</span>
-              </div>
-            </div>
-          </div>
-          <span class="card-toggle-icon">▼</span>
-        </div>
-
-        <div class="card-body">
-          <div class="guide-block">
-            <div class="guide-block-title cyan">⚡ Оформление и ЦД:</div>
-            <p class="guide-text">
-              Оформление онлайн, выбор бесплатного стартового тарифа без абонентской платы.
-            </p>
-            <ul class="guide-list" style="margin-top: 8px;">
-              <li><b>Целевое действие:</b> 1–2 перевода суммой <b>30 000+ ₽</b> (с запасом, неровными суммами).</li>
-              <li><b>Назначение перевода:</b> Только по коммерческой деятельности (товар/услуга по ОКВЭД 47.91).</li>
-            </ul>
-          </div>
-
-          <a href="#" class="btn-apply" id="link-akbars" target="_blank" onclick="handleBankClick('akbars', event)">
-            🔗 Оформить Ак Барс Банк ➔
-          </a>
-
-          <div class="checkbox-wrap" onclick="toggleComplete('akbars')">
-            <span class="checkbox-label">
-              <span>Отметиться:</span>
-              <span id="label-akbars">Заявка подана / Счет открыт</span>
-            </span>
-            <div class="custom-switch" id="switch-akbars"></div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- TAB: TARGET ACTIONS (ЦЕЛЕВЫЕ ДЕЙСТВИЯ) -->
@@ -1505,99 +1787,7 @@
         </ul>
       </div>
 
-      <!-- ЧАСТЬ 3: ЦД С ПЕРЕВОДАМИ (B2B ПЕРЕВОДЫ) -->
-      <div class="rule-card" style="border-left: 4px solid var(--accent-gold); background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(18, 24, 38, 0.95));">
-        <div class="rule-header" style="color: var(--accent-gold);">🔄 ЧАСТЬ 3: Целевые действия с переводами (B2B)</div>
-        <p class="rule-body" style="margin-bottom: 12px;">
-          По этим банкам банк требует сделать переводы между расчетными счетами ИП, чтобы подтвердить реальную работу бизнеса:
-        </p>
-
-        <!-- Таблица переводов по банкам -->
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <div style="background: rgba(255, 255, 255, 0.04); border-radius: 9px; padding: 11px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <b style="color: #ffffff;">Уралсиб</b>
-              <span class="tag tag-free">3–5 переводов</span>
-            </div>
-            <div style="font-size: 0.83rem; color: #cbd5e1; margin-top: 3px;">
-              Общая сумма <b>30 000+ ₽</b> (делаем с запасом <b>35 000+ ₽</b>). 
-              <br>Разбиваем на 3 платежа неровными суммами: например <code>11 250 ₽ + 14 600 ₽ + 9 300 ₽</code>.
-            </div>
-          </div>
-
-          <div style="background: rgba(255, 255, 255, 0.04); border-radius: 9px; padding: 11px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <b style="color: #ffffff;">Локо-Банк</b>
-              <span class="tag tag-free">1–3 перевода</span>
-            </div>
-            <div style="font-size: 0.83rem; color: #cbd5e1; margin-top: 3px;">
-              Сумма <b>30 000+ ₽</b> (делаем с запасом <b>32 000 – 35 000 ₽</b>).
-            </div>
-          </div>
-
-          <div style="background: rgba(255, 255, 255, 0.04); border-radius: 9px; padding: 11px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <b style="color: #ffffff;">СберБизнес</b>
-              <span class="tag tag-free">Входящая транзакция</span>
-            </div>
-            <div style="font-size: 0.83rem; color: #cbd5e1; margin-top: 3px;">
-              Входящий перевод от 1 000 ₽ (делаем с запасом в районе <b>5 000 – 10 000 ₽</b>). <i>Начинаем всегда со Сбера и УБРиР!</i>
-            </div>
-          </div>
-
-          <div style="background: rgba(255, 255, 255, 0.04); border-radius: 9px; padding: 11px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <b style="color: #ffffff;">УБРиР</b>
-              <span class="tag tag-free">1–2 перевода</span>
-            </div>
-            <div style="font-size: 0.83rem; color: #cbd5e1; margin-top: 3px;">
-              Перевод суммой <b>5 000+ ₽</b> (неровной суммой, например <code>5 340 ₽</code>).
-            </div>
-          </div>
-
-          <div style="background: rgba(255, 255, 255, 0.04); border-radius: 9px; padding: 11px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <b style="color: #ffffff;">Ак Барс Банк</b>
-              <span class="tag tag-free">1–2 перевода</span>
-            </div>
-            <div style="font-size: 0.83rem; color: #cbd5e1; margin-top: 3px;">
-              Перевод суммой <b>30 000+ ₽</b> (неровной суммой).
-            </div>
-          </div>
-        </div>
-
-        <!-- 7 ПРАВИЛ ПЕРЕВОДОВ -->
-        <div style="margin-top: 14px; background: rgba(10, 14, 22, 0.85); border-radius: 10px; padding: 12px; border: 1px solid rgba(255,255,255,0.06);">
-          <div style="font-size: 0.86rem; font-weight: 700; color: var(--accent-red); margin-bottom: 8px;">⛔ КРИТИЧЕСКИЕ ПРАВИЛА ПЕРЕВОДОВ:</div>
-          <ul class="guide-list">
-            <li><b>1. Суммы всегда в бОльшую сторону:</b> нужно 30к — делай 35к+.</li>
-            <li><b>2. НЕ ровные суммы:</b> забудь про круглые цифры. Переводи <code>11 250 ₽</code>, <code>14 600 ₽</code>, <code>9 300 ₽</code>.</li>
-            <li><b>3. СТРОГИЙ ЗАПРЕТ на переводы туда-обратно:</b> Лид 1 перевел Лиду 2, и Лид 2 сразу вернул Лиду 1 — <span style="color: var(--accent-red);">ТАК ДЕЛАТЬ НЕЛЬЗЯ!</span> (это триггерит финмониторинг 115-ФЗ).</li>
-            <li><b>4. Переводы идут по цепочке («Четверками»):</b> Лид 1 ➔ Лид 2 ➔ Лид 3 ➔ Лид 4 по кольцу под кураторством Вадима.</li>
-            <li><b>5. Перекрестное закрытие ЦД:</b> когда ты делаешь перевод с Уралсиба на ВТБ или Альфу другого человека — ты <b>одним переводом закрываешь сразу 2 банка!</b></li>
-          </ul>
-        </div>
-
-        <!-- НАЗНАЧЕНИЯ ПЕРЕВОДОВ (ОКВЭД 47.91) -->
-        <div style="margin-top: 14px; background: rgba(10, 14, 22, 0.7); border-radius: 10px; padding: 12px;">
-          <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 6px;">📝 Безопасные назначения платежей (под ОКВЭД 47.91):</div>
-          <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 8px;">Копируй любой вариант в поле назначения перевода:</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Оплата отправки заказов</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Оплата упаковки товара</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Предоплата партии</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Оплата услуг</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Заказ упаковочных материалов</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Оплата доставки товара</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Предоплата по договоренности</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Первый заказ партии</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Оплата предложения по продаже товара</span>
-            <span class="tag" style="background: rgba(0, 210, 255, 0.08); color: #e2e8f0; font-size: 0.76rem; padding: 4px 8px;">Предоплата за администрирование</span>
-          </div>
-        </div>
       </div>
-
-    </div>
 
     <!-- TAB 2: RULES & WARNINGS -->
     <div id="tab-rules" class="tab-content">
@@ -1722,10 +1912,7 @@
       tochka: "",    // Точка Банк РКО
       ozon: "",      // Ozon Банк РКО
       ubrir: "",     // УБРиР РКО
-      sber: "",      // СберБизнес РКО
-      uralsib: "",   // Уралсиб Банк РКО
-      loko: "",      // Локо-Банк РКО
-      akbars: ""     // Ак Барс Банк РКО
+      sber: ""       // СберБизнес РКО
     };
 
     function handleBankClick(bankKey, e) {
@@ -1815,42 +2002,102 @@
       card.classList.toggle('open');
     }
 
-    // Bank Progress State
-    let completedBanks = JSON.parse(localStorage.getItem('completed_rko_banks') || '[]');
+    // Flexible 4-Stage Pipeline Tracker
+    let bankStages = JSON.parse(localStorage.getItem('rko_pipeline_stages') || '{}');
 
-    function updateProgressUI() {
-      const cards = document.querySelectorAll('.card-bank');
-      const totalBanks = cards.length || 11;
-      const cashPerBank = 30000 / totalBanks;
-      const count = completedBanks.length;
-      const earned = Math.round(count * cashPerBank);
-      const percent = Math.round((count / totalBanks) * 100);
+    function toggleStage(bankKey, stageNum, e) {
+      if (e) e.stopPropagation();
+      haptic();
 
-      document.getElementById('cashDisplay').innerText = `${earned.toLocaleString('ru-RU')} / 30 000 ₽`;
-      document.getElementById('progressBar').style.width = `${percent}%`;
-      document.getElementById('banksCountText').innerText = `Оформлено: ${count} из ${totalBanks} банков`;
+      if (!bankStages[bankKey]) bankStages[bankKey] = [];
 
-      // Update card states
-      cards.forEach(card => {
-        const id = card.id.replace('bank-', '');
-        if (completedBanks.includes(id)) {
-          card.classList.add('completed');
-        } else {
-          card.classList.remove('completed');
+      const idx = bankStages[bankKey].indexOf(stageNum);
+      if (idx > -1) {
+        bankStages[bankKey].splice(idx, 1);
+      } else {
+        bankStages[bankKey].push(stageNum);
+        if (stageNum === 4 && window.Telegram?.WebApp?.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
         }
-      });
+      }
+
+      localStorage.setItem('rko_pipeline_stages', JSON.stringify(bankStages));
+      updatePipelineUI();
     }
 
-    function toggleComplete(bankKey) {
-      haptic();
-      if (completedBanks.includes(bankKey)) {
-        completedBanks = completedBanks.filter(k => k !== bankKey);
-      } else {
-        completedBanks.push(bankKey);
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      }
-      localStorage.setItem('completed_rko_banks', JSON.stringify(completedBanks));
-      updateProgressUI();
+    function updatePipelineUI() {
+      const cards = document.querySelectorAll('.card-bank');
+      const totalBanks = cards.length;
+      let totalDoneStages = 0;
+      let fullyCompletedBanks = 0;
+      const maxPossibleStages = totalBanks * 4;
+
+      cards.forEach(card => {
+        const bankKey = card.id.replace('bank-', '');
+        const activeStages = bankStages[bankKey] || [];
+        const count = activeStages.length;
+        totalDoneStages += count;
+
+        if (count === 4) fullyCompletedBanks++;
+
+        // Update the 4 checkboxes inside the card
+        for (let s = 1; s <= 4; s++) {
+          const stepEl = document.getElementById(`pstep-${bankKey}-${s}`);
+          if (stepEl) {
+            stepEl.classList.toggle('checked', activeStages.includes(s));
+          }
+        }
+
+        // Update mini dots in card header
+        for (let s = 1; s <= 4; s++) {
+          const dotEl = document.getElementById(`dot-${bankKey}-${s}`);
+          if (dotEl) {
+            dotEl.classList.toggle('done', activeStages.includes(s));
+            dotEl.classList.toggle('all-done', count === 4);
+          }
+        }
+
+        // Update pill in card header
+        const pill = document.getElementById(`pill-${bankKey}`);
+        if (pill) {
+          if (count === 4) {
+            pill.innerText = '✅ Готово';
+            pill.classList.add('complete');
+          } else if (count > 0) {
+            pill.innerText = `${count}/4`;
+            pill.classList.remove('complete');
+          } else {
+            pill.innerText = '0/4';
+            pill.classList.remove('complete');
+          }
+        }
+
+        // Update counter text inside card
+        const counterEl = document.getElementById(`counter-${bankKey}`);
+        if (counterEl) {
+          if (count === 4) {
+            counterEl.innerHTML = '<span style="color: var(--accent-green); font-weight: 700;">🎉 Все 4 этапа пройдены!</span>';
+          } else {
+            counterEl.innerText = `${count} из 4 пройдено`;
+          }
+        }
+
+        // Highlight card border if 4/4 completed
+        card.classList.toggle('completed', count === 4);
+      });
+
+      // Update Top Banner Progress
+      const cashGoal = 30000;
+      const earnedCash = maxPossibleStages > 0 ? Math.round(totalDoneStages * (cashGoal / maxPossibleStages)) : 0;
+      const percent = maxPossibleStages > 0 ? Math.round((totalDoneStages / maxPossibleStages) * 100) : 0;
+
+      document.getElementById('cashDisplay').innerText = `${earnedCash.toLocaleString('ru-RU')} / 30 000 ₽`;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+      document.getElementById('banksCountText').innerText = `Готово: ${fullyCompletedBanks} из ${totalBanks} банков · Шагов: ${totalDoneStages}/${maxPossibleStages}`;
+    }
+
+    // Initial render
+    updatePipelineUI();
     }
 
     // Initial render
